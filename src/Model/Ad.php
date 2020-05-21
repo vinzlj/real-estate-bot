@@ -8,64 +8,44 @@ use DateTime;
 
 class Ad
 {
+    public $origin;
     public $id;
     public $url;
     public $mainPicture;
     public $price;
-    public $title;
     public $city;
     public $address;
+    public $title;
     public $description;
     public $criterias;
     public $publicationDate;
 
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
+    public static function create(
+        string $origin,
+        int $id,
+        string $url,
+        string $mainPicture,
+        ?int $price,
+        ?string $city,
+        ?string $address,
+        ?string $title,
+        ?string $description,
+        ?string $criterias,
+        ?DateTime $publicationDate
+    ): self {
+        $ad = new self();
+        $ad->origin = $origin;
+        $ad->id = $id;
+        $ad->url = $url;
+        $ad->mainPicture = $mainPicture;
+        $ad->price = $price;
+        $ad->city = $city;
+        $ad->address = $address;
+        $ad->title = $title;
+        $ad->description = $description;
+        $ad->criterias = $criterias;
+        $ad->publicationDate = $publicationDate;
 
-    public function setUrl(string $url): void
-    {
-        $this->url = $url;
-    }
-
-    public function setMainPicture(string $mainPicture): void
-    {
-        $this->mainPicture = $mainPicture;
-    }
-
-    public function setPrice(?int $price): void
-    {
-        $this->price = $price;
-    }
-
-    public function setTitle(?string $title): void
-    {
-        $this->title = $title;
-    }
-
-    public function setCity(?string $city): void
-    {
-        $this->city = $city;
-    }
-
-    public function setAddress(?string $address): void
-    {
-        $this->address = $address;
-    }
-
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
-    }
-
-    public function setCriterias(?string $criterias): void
-    {
-        $this->criterias = $criterias;
-    }
-
-    public function setPublicationDate(?DateTime $publicationDate): void
-    {
-        $this->publicationDate = $publicationDate;
+        return $ad;
     }
 }

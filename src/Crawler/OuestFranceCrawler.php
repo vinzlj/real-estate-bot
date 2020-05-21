@@ -4,23 +4,13 @@ declare(strict_types=1);
 
 namespace Crawler;
 
-use Database\DatabaseInterface;
 use Model\Ad;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class OuestFranceCrawler implements CrawlerInterface
+class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 {
-    private $client;
-    private $database;
-    private $urls;
-
-    public function __construct(HttpClientInterface $client, DatabaseInterface $database, array $urls)
-    {
-        $this->client = $client;
-        $this->database = $database;
-        $this->urls = $urls;
-    }
+    private const WEBSITE_ORIGIN = 'Ouest France';
+    private const WEBSITE_BASE_URL = 'https://www.ouestfrance-immo.com';
 
     public function crawl(): void
     {
@@ -28,35 +18,26 @@ class OuestFranceCrawler implements CrawlerInterface
             $crawler = $this->getCrawlerForUrl($url);
 
             $crawler->filter('#listAnnonces>a')->each(function (Crawler $adCrawler) use ($city) {
-                $ad = new Ad();
-                $ad->setId($this->extractAdId($adCrawler));
-                $ad->setUrl($this->extractAdUrl($adCrawler));
-                $ad->setMainPicture($this->extractAdMainPicture($adCrawler));
-                $ad->setPrice($this->extractAdPrice($adCrawler));
-                $ad->setTitle($this->extractAdTitle($adCrawler));
-                $ad->setCity($this->extractAdCity($adCrawler, $city));
-                $ad->setAddress($this->extractAdAddress($adCrawler));
-                $ad->setDescription($this->extractAdDescription($adCrawler));
-                $ad->setCriterias($this->extractAdCriterias($adCrawler));
-                $ad->setPublicationDate($this->extractAdPublicationDate($adCrawler));
+                $ad = Ad::create(
+                    self::WEBSITE_ORIGIN,
+                    $this->extractAdId($adCrawler),
+                    $this->extractAdUrl($adCrawler),
+                    $this->extractAdMainPicture($adCrawler),
+                    $this->extractAdPrice($adCrawler),
+                    $this->extractAdCity($adCrawler, $city),
+                    $this->extractAdAddress($adCrawler),
+                    $this->extractAdTitle($adCrawler),
+                    $this->extractAdDescription($adCrawler),
+                    $this->extractAdCriterias($adCrawler),
+                    $this->extractAdPublicationDate($adCrawler)
+                );
 
                 if (!$this->database->exists($ad)) {
                     $this->database->insert($ad);
+                    $this->notificationManager->notify($ad);
                 }
             });
         }
-    }
-
-    public function display(): void
-    {
-        dump($this->database->getAds());
-    }
-
-    public function getCrawlerForUrl(string $url): Crawler
-    {
-        $response = $this->client->request('GET', $url);
-
-        return new Crawler($response->getContent());
     }
 
     public function extractAdId(Crawler $adCrawler): int
@@ -66,7 +47,7 @@ class OuestFranceCrawler implements CrawlerInterface
 
     public function extractAdUrl(Crawler $adCrawler): string
     {
-        return $adCrawler->attr('href');
+        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->attr('href'));
     }
 
     public function extractAdMainPicture(Crawler $adCrawler): string
@@ -103,7 +84,7 @@ class OuestFranceCrawler implements CrawlerInterface
         $selector = 'div.annBlocDesc span.annVille';
 
         if (0 === $adCrawler->filter($selector)->count()) {
-            return null;
+            return $city;
         }
 
         return $adCrawler->filter($selector)->text();

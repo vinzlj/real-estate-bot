@@ -36,6 +36,10 @@ class AdDatabase implements DatabaseInterface
 
     private function readDatabase(): array
     {
+        if (!file_exists($this->databaseFile)) {
+            file_put_contents($this->databaseFile, '');
+        }
+
         $data = file_get_contents($this->databaseFile);
 
         if (empty($data)) {

@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace Crawler;
 
+use Database\DatabaseInterface;
 use Model\Ad;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class OuestFranceCrawler
+class OuestFranceCrawler implements CrawlerInterface
 {
     private $client;
+    private $database;
     private $urls;
-    private $ads = [];
 
-    public function __construct(HttpClientInterface $client, array $urls)
+    public function __construct(HttpClientInterface $client, DatabaseInterface $database, array $urls)
     {
         $this->client = $client;
+        $this->database = $database;
         $this->urls = $urls;
     }
 
@@ -38,39 +40,41 @@ class OuestFranceCrawler
                 $ad->setCriterias($this->extractAdCriterias($adCrawler));
                 $ad->setPublicationDate($this->extractAdPublicationDate($adCrawler));
 
-                $this->ads[$ad->id] = $ad;
+                if (!$this->database->exists($ad)) {
+                    $this->database->insert($ad);
+                }
             });
         }
     }
 
     public function display(): void
     {
-        dump($this->ads);
+        dump($this->database->getAds());
     }
 
-    private function getCrawlerForUrl(string $url): Crawler
+    public function getCrawlerForUrl(string $url): Crawler
     {
         $response = $this->client->request('GET', $url);
 
         return new Crawler($response->getContent());
     }
 
-    private function extractAdId(Crawler $adCrawler): int
+    public function extractAdId(Crawler $adCrawler): int
     {
         return (int) $adCrawler->filter('div')->attr('data-id');
     }
 
-    private function extractAdUrl(Crawler $adCrawler): string
+    public function extractAdUrl(Crawler $adCrawler): string
     {
         return $adCrawler->attr('href');
     }
 
-    private function extractAdMainPicture(Crawler $adCrawler): string
+    public function extractAdMainPicture(Crawler $adCrawler): string
     {
         return $adCrawler->filter('div.photoClassique img')->attr('data-original');
     }
 
-    private function extractAdPrice(Crawler $adCrawler): ?int
+    public function extractAdPrice(Crawler $adCrawler): ?int
     {
         $selector = 'div.annBlocDesc span.annPrix';
 
@@ -83,7 +87,7 @@ class OuestFranceCrawler
         return (int) $matches[1];
     }
 
-    private function extractAdTitle(Crawler $adCrawler): ?string
+    public function extractAdTitle(Crawler $adCrawler): ?string
     {
         $selector = 'div.annBlocDesc span.annTitre';
 
@@ -94,7 +98,7 @@ class OuestFranceCrawler
         return $adCrawler->filter($selector)->text();
     }
 
-    private function extractAdCity(Crawler $adCrawler, string $city): ?string
+    public function extractAdCity(Crawler $adCrawler, string $city = null): ?string
     {
         $selector = 'div.annBlocDesc span.annVille';
 
@@ -105,7 +109,7 @@ class OuestFranceCrawler
         return $adCrawler->filter($selector)->text();
     }
 
-    private function extractAdAddress(Crawler $adCrawler): ?string
+    public function extractAdAddress(Crawler $adCrawler): ?string
     {
         $selector = 'div.annBlocDesc span.annAdresse';
 
@@ -116,7 +120,7 @@ class OuestFranceCrawler
         return $adCrawler->filter($selector)->text();
     }
 
-    private function extractAdDescription(Crawler $adCrawler): ?string
+    public function extractAdDescription(Crawler $adCrawler): ?string
     {
         $selector = 'div.annBlocDesc span.annTexte';
 
@@ -127,7 +131,7 @@ class OuestFranceCrawler
         return $adCrawler->filter($selector)->text();
     }
 
-    private function extractAdCriterias(Crawler $adCrawler): ?string
+    public function extractAdCriterias(Crawler $adCrawler): ?string
     {
         $selector = 'div.annBlocDesc span.annCriteres';
 
@@ -138,7 +142,7 @@ class OuestFranceCrawler
         return $adCrawler->filter($selector)->text();
     }
 
-    private function extractAdPublicationDate(Crawler $adCrawler): ?\DateTime
+    public function extractAdPublicationDate(Crawler $adCrawler): ?\DateTime
     {
         $date = $adCrawler->filter('div.annBlocDesc span.annDebAff')->text();
         preg_match('/(\d{2})\/(\d{2})\/(\d{2})/', $date, $matches);

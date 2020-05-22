@@ -16,10 +16,13 @@ class NotificationManager
         $this->notifiers[] = $notifier;
     }
 
-    public function notify(Ad $ad): void
+    /**
+     * @param Ad[] $ads
+     */
+    public function notify(array $ads): void
     {
         foreach ($this->notifiers as $notifier) {
-            $notifier->notify($ad);
+            $notifier->notify($ads);
         }
     }
 }

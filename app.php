@@ -1,9 +1,12 @@
 <?php
 
+use Command\RunCrawlerCommand;
+use Crawler\CrawlerContainer;
 use Crawler\OuestFranceCrawler;
 use Database\AdDatabase;
 use Notification\NotificationManager;
 use Notification\SMSNotifier;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpClient\HttpClient;
 use Twilio\Rest\Client;
@@ -26,11 +29,9 @@ $ouestFranceCrawler = new OuestFranceCrawler($httpClient, $database, $notificati
     'Saint-Sebastien' => 'https://www.ouestfrance-immo.com/louer/maison/saint-sebastien-sur-loire-44-44230/?prix=0_1000'
 ]);
 
-$crawlers = [
-    $ouestFranceCrawler,
-];
+$crawlerContainer = new CrawlerContainer();
+$crawlerContainer->addCrawler($ouestFranceCrawler);
 
-foreach ($crawlers as $crawler) {
-    $crawler->crawl();
-    $crawler->display();
-}
+$application = new Application();
+$application->add(new RunCrawlerCommand($crawlerContainer, $notificationManager, $database));
+$application->run();

@@ -8,5 +8,8 @@ use Model\Ad;
 
 interface NotifierInterface
 {
-    public function notify(Ad $ad): void;
+    /**
+     * @param Ad[] $ads
+     */
+    public function notify(array $ads): void;
 }

@@ -29,11 +29,6 @@ abstract class BaseCrawler implements CrawlerInterface
         $this->urls = $urls;
     }
 
-    public function display(): void
-    {
-        dump($this->database->getAds());
-    }
-
     public function getCrawlerForUrl(string $url): Crawler
     {
         $response = $this->client->request('GET', $url);

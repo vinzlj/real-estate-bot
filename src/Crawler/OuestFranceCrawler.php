@@ -34,7 +34,6 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 
                 if (!$this->database->exists($ad)) {
                     $this->database->insert($ad);
-                    $this->notificationManager->notify($ad);
                 }
             });
         }

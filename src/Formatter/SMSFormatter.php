@@ -8,8 +8,8 @@ use Model\Ad;
 
 class SMSFormatter
 {
-    public static function format(Ad $ad)
+    public static function format(Ad $ad): string
     {
-        return sprintf('Une nouvelle annonce a été publiée sur le site %s: %s', $ad->origin, $ad->url);
+        return sprintf('New ad published on site %s: %s', $ad->origin, $ad->url);
     }
 }

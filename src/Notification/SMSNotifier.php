@@ -17,7 +17,21 @@ class SMSNotifier implements NotifierInterface
         $this->client = $client;
     }
 
-    public function notify(Ad $ad): void
+    /**
+     * @param Ad[]
+     */
+    public function notify(array $ads): void
+    {
+        if (0 === count($ads)) {
+            return;
+        }
+
+        foreach ($ads as $ad) {
+            $this->sendMessage($ad);
+        }
+    }
+
+    private function sendMessage(Ad $ad): void
     {
         dump(sprintf('sending sms: %s', SMSFormatter::format($ad)));
 

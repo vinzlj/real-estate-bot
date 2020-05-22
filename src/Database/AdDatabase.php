@@ -9,6 +9,7 @@ use Model\Ad;
 class AdDatabase implements DatabaseInterface
 {
     private $databaseFile;
+    private $newAds = [];
 
     public function __construct(string $databaseFile)
     {
@@ -26,12 +27,14 @@ class AdDatabase implements DatabaseInterface
             return;
         }
 
+        $this->newAds[] = $ad;
+
         $this->writeDatabase(array_merge($this->readDatabase(), [json_decode(json_encode($ad), true)]));
     }
 
-    public function getAds(): array
+    public function getNewAds(): array
     {
-        return $this->readDatabase();
+        return $this->newAds;
     }
 
     private function readDatabase(): array

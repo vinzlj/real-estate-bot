@@ -73,4 +73,3 @@ class RunCrawlerCommand extends Command
         return 0;
     }
 }
-

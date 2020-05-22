@@ -1,3 +1,4 @@
 vendor/
 data/
 .env
+.php_cs.cache

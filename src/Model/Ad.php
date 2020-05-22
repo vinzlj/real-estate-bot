@@ -23,8 +23,8 @@ class Ad
     public static function create(
         string $origin,
         int $id,
-        string $url,
-        string $mainPicture,
+        ?string $url,
+        ?string $mainPicture,
         ?int $price,
         ?string $city,
         ?string $address,

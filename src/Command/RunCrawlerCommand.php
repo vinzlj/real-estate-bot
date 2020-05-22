@@ -58,7 +58,7 @@ class RunCrawlerCommand extends Command
             $this->io->section(sprintf('%s - New ads', (new DateTime())->format('Y-m-d H:i:s')));
 
             if (0 === count($newAds)) {
-                $this->io->text('No new ads');
+                $this->io->text('No new ad');
 
                 return 0;
             }

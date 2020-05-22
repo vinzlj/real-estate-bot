@@ -7,17 +7,17 @@ namespace Crawler;
 use Model\Ad;
 use Symfony\Component\DomCrawler\Crawler;
 
-class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
+class Century21Crawler extends BaseCrawler implements AdCrawlerInterface
 {
-    private const WEBSITE_ORIGIN = 'Ouest France';
-    private const WEBSITE_BASE_URL = 'https://www.ouestfrance-immo.com';
+    private const WEBSITE_ORIGIN = 'Century 21';
+    private const WEBSITE_BASE_URL = 'https://www.century21byouestsaintseb.com';
 
     public function crawl(): void
     {
         foreach ($this->urls as $url) {
             $crawler = $this->getCrawlerForUrl($url);
 
-            $crawler->filter('#listAnnonces>a')->each(function (Crawler $adCrawler) {
+            $crawler->filter('#blocANNONCES li.annonce')->each(function (Crawler $adCrawler) {
                 $ad = Ad::create(
                     self::WEBSITE_ORIGIN,
                     $this->extractAdId($adCrawler),
@@ -41,22 +41,63 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 
     public function extractAdId(Crawler $adCrawler): int
     {
-        return (int) $adCrawler->filter('div')->attr('data-id');
+        return (int) $adCrawler->filter('div')->attr('data-uid');
     }
 
     public function extractAdUrl(Crawler $adCrawler): ?string
     {
-        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->attr('href'));
+        $selector = 'div.zone-text-loupe a';
+
+        if (0 === $adCrawler->filter($selector)->count()) {
+            return null;
+        }
+
+        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->filter($selector)->attr('href'));
     }
 
     public function extractAdMainPicture(Crawler $adCrawler): ?string
     {
-        return $adCrawler->filter('div.photoClassique img')->attr('data-original');
+        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->filter('p.photoAnnonce img')->attr('src'));
     }
 
     public function extractAdPrice(Crawler $adCrawler): ?int
     {
-        $selector = 'div.annBlocDesc span.annPrix';
+        $selector = 'div.price';
+
+        if (0 === $adCrawler->filter($selector)->count()) {
+            return null;
+        }
+
+        preg_match('/(\d{1,} ?\d{1,})/', $adCrawler->filter($selector)->text(), $matches);
+
+        return (int) str_replace(' ', '', $matches[1]);
+    }
+
+    public function extractAdTitle(Crawler $adCrawler): ?string
+    {
+        return null;
+    }
+
+    public function extractAdCity(Crawler $adCrawler): ?string
+    {
+        $selector = 'div.zone-text-loupe h3';
+
+        if (0 === $adCrawler->filter($selector)->count()) {
+            return null;
+        }
+
+        preg_match('/([a-zA-Z ]*)/', $adCrawler->filter($selector)->text(), $matches);
+
+        if (2 > count($matches)) {
+            return null;
+        }
+
+        return $matches[1];
+    }
+
+    public function extractAdAddress(Crawler $adCrawler): ?string
+    {
+        $selector = 'div.zone-text-loupe h3';
 
         if (0 === $adCrawler->filter($selector)->count()) {
             return null;
@@ -64,56 +105,21 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 
         preg_match('/(\d{1,})/', $adCrawler->filter($selector)->text(), $matches);
 
-        return (int) $matches[1];
-    }
-
-    public function extractAdTitle(Crawler $adCrawler): ?string
-    {
-        $selector = 'div.annBlocDesc span.annTitre';
-
-        if (0 === $adCrawler->filter($selector)->count()) {
+        if (2 > count($matches)) {
             return null;
         }
 
-        return $adCrawler->filter($selector)->text();
-    }
-
-    public function extractAdCity(Crawler $adCrawler): ?string
-    {
-        $selector = 'div.annBlocDesc span.annVille';
-
-        if (0 === $adCrawler->filter($selector)->count()) {
-            return null;
-        }
-
-        return $adCrawler->filter($selector)->text();
-    }
-
-    public function extractAdAddress(Crawler $adCrawler): ?string
-    {
-        $selector = 'div.annBlocDesc span.annAdresse';
-
-        if (0 === $adCrawler->filter($selector)->count()) {
-            return null;
-        }
-
-        return $adCrawler->filter($selector)->text();
+        return $matches[1];
     }
 
     public function extractAdDescription(Crawler $adCrawler): ?string
     {
-        $selector = 'div.annBlocDesc span.annTexte';
-
-        if (0 === $adCrawler->filter($selector)->count()) {
-            return null;
-        }
-
-        return $adCrawler->filter($selector)->text();
+        return null;
     }
 
     public function extractAdCriterias(Crawler $adCrawler): ?string
     {
-        $selector = 'div.annBlocDesc span.annCriteres';
+        $selector = 'div.zone-text-loupe h4.detail_vignette';
 
         if (0 === $adCrawler->filter($selector)->count()) {
             return null;
@@ -124,13 +130,6 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 
     public function extractAdPublicationDate(Crawler $adCrawler): ?\DateTime
     {
-        $date = $adCrawler->filter('div.annBlocDesc span.annDebAff')->text();
-        preg_match('/(\d{2})\/(\d{2})\/(\d{2})/', $date, $matches);
-
-        if (!isset($matches[1]) | !isset($matches[2]) | !isset($matches[3])) {
-            return null;
-        }
-
-        return new \DateTime(sprintf('20%d-%d-%d', $matches[3], $matches[2], $matches[1]));
+        return null;
     }
 }

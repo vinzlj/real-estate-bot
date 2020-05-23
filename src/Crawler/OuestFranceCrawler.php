@@ -4,38 +4,26 @@ declare(strict_types=1);
 
 namespace Crawler;
 
-use Model\Ad;
 use Symfony\Component\DomCrawler\Crawler;
 
 class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 {
-    private const WEBSITE_ORIGIN = 'Ouest France';
     private const WEBSITE_BASE_URL = 'https://www.ouestfrance-immo.com';
+
+    protected $websiteOrigin = 'Ouest France';
+    protected $adSelector = '#listAnnonces>a';
+
 
     public function crawl(): void
     {
         foreach ($this->urls as $url) {
             $crawler = $this->getCrawlerForUrl($url);
 
-            $crawler->filter('#listAnnonces>a')->each(function (Crawler $adCrawler) {
-                $ad = Ad::create(
-                    self::WEBSITE_ORIGIN,
-                    $this->extractAdId($adCrawler),
-                    $this->extractAdUrl($adCrawler),
-                    $this->extractAdMainPicture($adCrawler),
-                    $this->extractAdPrice($adCrawler),
-                    $this->extractAdCity($adCrawler),
-                    $this->extractAdAddress($adCrawler),
-                    $this->extractAdTitle($adCrawler),
-                    $this->extractAdDescription($adCrawler),
-                    $this->extractAdCriterias($adCrawler),
-                    $this->extractAdPublicationDate($adCrawler)
-                );
+            if (0 < $crawler->filter('div.noAnnonces')->count()) {
+                continue;
+            }
 
-                if (!$this->database->exists($ad)) {
-                    $this->database->insert($ad);
-                }
-            });
+            $this->crawlUrl($crawler);
         }
     }
 
@@ -44,7 +32,7 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
         return (int) $adCrawler->filter('div')->attr('data-id');
     }
 
-    public function extractAdUrl(Crawler $adCrawler): ?string
+    public function extractAdUrl(Crawler $adCrawler): string
     {
         return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->attr('href'));
     }

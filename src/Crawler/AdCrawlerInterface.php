@@ -7,7 +7,7 @@ use Symfony\Component\DomCrawler\Crawler;
 interface AdCrawlerInterface
 {
     public function extractAdId(Crawler $adCrawler): int;
-    public function extractAdUrl(Crawler $adCrawler): ?string;
+    public function extractAdUrl(Crawler $adCrawler): string;
     public function extractAdMainPicture(Crawler $adCrawler): ?string;
     public function extractAdPrice(Crawler $adCrawler): ?int;
     public function extractAdTitle(Crawler $adCrawler): ?string;

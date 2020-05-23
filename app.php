@@ -4,6 +4,7 @@ use Command\RunCrawlerCommand;
 use Crawler\Century21Crawler;
 use Crawler\CrawlerContainer;
 use Crawler\OuestFranceCrawler;
+use Crawler\SeLogerCrawler;
 use Database\AdDatabase;
 use Notification\NotificationManager;
 use Notification\SMSNotifier;
@@ -34,9 +35,14 @@ $century21Crawler = new Century21Crawler($httpClient, $database, $notificationMa
     'https://www.century21byouestsaintseb.com/annonces/location-maison/s-0-/st-0-/b-0-1000/',
 ]);
 
+$seLogerCrawler = new SeLogerCrawler($httpClient, $database, $notificationManager, [
+    'https://www.seloger.com/list.htm?ci=440109,440143,440190&idtt=1&idtypebien=2&pxmax=1000&tri=d_dt_crea',
+]);
+
 $crawlerContainer = new CrawlerContainer();
 $crawlerContainer->addCrawler($ouestFranceCrawler);
 $crawlerContainer->addCrawler($century21Crawler);
+$crawlerContainer->addCrawler($seLogerCrawler);
 
 $application = new Application();
 $application->add(new RunCrawlerCommand($crawlerContainer, $notificationManager, $database));

@@ -4,55 +4,23 @@ declare(strict_types=1);
 
 namespace Crawler;
 
-use Model\Ad;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Century21Crawler extends BaseCrawler implements AdCrawlerInterface
 {
-    private const WEBSITE_ORIGIN = 'Century 21';
     private const WEBSITE_BASE_URL = 'https://www.century21byouestsaintseb.com';
 
-    public function crawl(): void
-    {
-        foreach ($this->urls as $url) {
-            $crawler = $this->getCrawlerForUrl($url);
-
-            $crawler->filter('#blocANNONCES li.annonce')->each(function (Crawler $adCrawler) {
-                $ad = Ad::create(
-                    self::WEBSITE_ORIGIN,
-                    $this->extractAdId($adCrawler),
-                    $this->extractAdUrl($adCrawler),
-                    $this->extractAdMainPicture($adCrawler),
-                    $this->extractAdPrice($adCrawler),
-                    $this->extractAdCity($adCrawler),
-                    $this->extractAdAddress($adCrawler),
-                    $this->extractAdTitle($adCrawler),
-                    $this->extractAdDescription($adCrawler),
-                    $this->extractAdCriterias($adCrawler),
-                    $this->extractAdPublicationDate($adCrawler)
-                );
-
-                if (!$this->database->exists($ad)) {
-                    $this->database->insert($ad);
-                }
-            });
-        }
-    }
+    protected $websiteOrigin = 'Century 21';
+    protected $adSelector = '#blocANNONCES li.annonce';
 
     public function extractAdId(Crawler $adCrawler): int
     {
         return (int) $adCrawler->filter('div')->attr('data-uid');
     }
 
-    public function extractAdUrl(Crawler $adCrawler): ?string
+    public function extractAdUrl(Crawler $adCrawler): string
     {
-        $selector = 'div.zone-text-loupe a';
-
-        if (0 === $adCrawler->filter($selector)->count()) {
-            return null;
-        }
-
-        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->filter($selector)->attr('href'));
+        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->filter('div.zone-text-loupe a')->attr('href'));
     }
 
     public function extractAdMainPicture(Crawler $adCrawler): ?string

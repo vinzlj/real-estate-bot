@@ -65,7 +65,7 @@ class BaseCrawler implements CrawlerInterface
 
         $content = $response->getContent();
 
-        $this->saveResponse($content);
+        $this->saveResponse($url, $content);
 
         return new Crawler($content);
     }
@@ -75,8 +75,8 @@ class BaseCrawler implements CrawlerInterface
         return [];
     }
 
-    private function saveResponse(string $content): void
+    private function saveResponse(string $url, string $content): void
     {
-        file_put_contents(sprintf(__DIR__.'/../../data/%s.html', strtolower(str_replace(' ', '_', $this->name))), $content);
+        file_put_contents(sprintf(__DIR__.'/../../data/%s.html', strtolower(str_replace('/', '_', str_replace('https://', '', $url)))), $content);
     }
 }

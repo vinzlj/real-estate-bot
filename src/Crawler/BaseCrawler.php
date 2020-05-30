@@ -65,7 +65,11 @@ abstract class BaseCrawler implements CrawlerInterface
             'headers' => $this->getRequestHeaders(),
         ]);
 
-        return new Crawler($response->getContent());
+        $content = $response->getContent();
+
+        file_put_contents(sprintf(__DIR__.'/../../data/%s.html', strtolower(str_replace(' ', '_', $this->websiteOrigin))), $content);
+
+        return new Crawler($content);
     }
 
     protected function getRequestHeaders(): array

@@ -1,4 +1,5 @@
 vendor/
-data/database.json
+data/*.json
+data/*.html
 .env
 .php_cs.cache

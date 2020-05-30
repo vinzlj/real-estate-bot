@@ -1,7 +1,7 @@
 app:
   database_path: 'data/database.json'
   crawlers:
-    ouest_france:
+    ouest_france: # used for crawler class name: Crawler\Implementation\OuestFranceCrawler
       name: 'Ouest France'
       base_url: 'https://www.ouestfrance-immo.com'
       ad_selector: '#listAnnonces>a'
@@ -28,3 +28,12 @@ app:
       ad_selector: '#blocANNONCES li.annonce'
       urls:
         - 'https://www.century21byouestsaintseb.com/annonces/location-maison/s-0-/st-0-/b-0-1100/'
+    four_immo:
+      name: '4 immo'
+      base_url: 'https://www.4immo.fr'
+      ad_selector: 'article.node'
+      urls:
+        - 'https://www.4immo.fr/location/maison/nantes?prix_maximum=1100&surface_minimum=60'
+        - 'https://www.4immo.fr/location/maison/reze?prix_maximum=1100&surface_minimum=60'
+        - 'https://www.4immo.fr/location/maison/st-herblain?prix_maximum=1100&surface_minimum=60'
+        - 'https://www.4immo.fr/location/maison/st-sebastien-sur-loire?prix_maximum=1100&surface_minimum=60'

@@ -8,15 +8,17 @@ use Crawler\AdCrawlerInterface;
 use Crawler\BaseCrawler;
 use Symfony\Component\DomCrawler\Crawler;
 
-class Century21SaintSebastienCrawler extends BaseCrawler implements AdCrawlerInterface
+class LogicImmoCrawler extends BaseCrawler implements AdCrawlerInterface
 {
     public function extractAdId(Crawler $adCrawler): string
     {
-        return $adCrawler->filter('div')->attr('data-uid');
+        preg_match('/header-offer-(.*)/', $adCrawler->filter('div.offer-block')->attr('id'), $matches);
+
+        return $matches[1];
     }
 
     public function extractAdUrl(Crawler $adCrawler): string
     {
-        return sprintf('%s%s', $this->baseUrl, $adCrawler->filter('div.zone-text-loupe a')->attr('href'));
+        return $adCrawler->filter('div.offer-block div.offer-details-caracteristik a')->attr('href');
     }
 }

@@ -10,9 +10,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Century21Crawler extends BaseCrawler implements AdCrawlerInterface
 {
-    public function extractAdId(Crawler $adCrawler): int
+    public function extractAdId(Crawler $adCrawler): string
     {
-        return (int) $adCrawler->filter('div')->attr('data-uid');
+        return $adCrawler->filter('div')->attr('data-uid');
     }
 
     public function extractAdUrl(Crawler $adCrawler): string

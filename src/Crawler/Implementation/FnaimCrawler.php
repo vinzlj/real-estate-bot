@@ -30,9 +30,9 @@ class FnaimCrawler extends BaseCrawler implements AdCrawlerInterface
         });
     }
 
-    public function extractAdId(Crawler $adCrawler): int
+    public function extractAdId(Crawler $adCrawler): string
     {
-        return (int) $adCrawler->filter('a.linkAnnonce')->attr('data-id');
+        return $adCrawler->filter('a.linkAnnonce')->attr('data-id');
     }
 
     public function extractAdUrl(Crawler $adCrawler): string

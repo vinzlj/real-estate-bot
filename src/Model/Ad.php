@@ -10,7 +10,7 @@ class Ad
     public $id;
     public $url;
 
-    public static function create(string $origin, int $id, string $url): self
+    public static function create(string $origin, string $id, string $url): self
     {
         $ad = new self();
         $ad->origin = $origin;

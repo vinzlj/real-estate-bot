@@ -23,9 +23,9 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
         }
     }
 
-    public function extractAdId(Crawler $adCrawler): int
+    public function extractAdId(Crawler $adCrawler): string
     {
-        return (int) $adCrawler->filter('div')->attr('data-id');
+        return $adCrawler->filter('div')->attr('data-id');
     }
 
     public function extractAdUrl(Crawler $adCrawler): string

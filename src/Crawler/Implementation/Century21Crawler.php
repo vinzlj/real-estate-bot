@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Crawler;
+namespace Crawler\Implementation;
 
+use Crawler\AdCrawlerInterface;
+use Crawler\BaseCrawler;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Century21Crawler extends BaseCrawler implements AdCrawlerInterface
 {
-    private const WEBSITE_BASE_URL = 'https://www.century21.fr';
-
-    protected $websiteOrigin = 'Century 21';
-    protected $adSelector = '#blocANNONCES li.annonce';
-
     public function extractAdId(Crawler $adCrawler): int
     {
         return (int) $adCrawler->filter('div')->attr('data-uid');
@@ -20,6 +17,6 @@ class Century21Crawler extends BaseCrawler implements AdCrawlerInterface
 
     public function extractAdUrl(Crawler $adCrawler): string
     {
-        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->filter('div.zone-text-loupe a')->attr('href'));
+        return sprintf('%s%s', $this->baseUrl, $adCrawler->filter('div.zone-text-loupe a')->attr('href'));
     }
 }

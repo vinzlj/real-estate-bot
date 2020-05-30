@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Crawler;
+namespace Crawler\Implementation;
 
+use Crawler\AdCrawlerInterface;
+use Crawler\BaseCrawler;
 use Symfony\Component\DomCrawler\Crawler;
 
 class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 {
-    private const WEBSITE_BASE_URL = 'https://www.ouestfrance-immo.com';
-
-    protected $websiteOrigin = 'Ouest France';
-    protected $adSelector = '#listAnnonces>a';
-
     public function crawl(): void
     {
         foreach ($this->urls as $url) {
@@ -33,6 +30,6 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
 
     public function extractAdUrl(Crawler $adCrawler): string
     {
-        return sprintf('%s%s', self::WEBSITE_BASE_URL, $adCrawler->attr('href'));
+        return sprintf('%s%s', $this->baseUrl, $adCrawler->attr('href'));
     }
 }

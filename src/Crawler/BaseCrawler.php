@@ -6,30 +6,30 @@ namespace Crawler;
 
 use Database\DatabaseInterface;
 use Model\Ad;
-use Notification\NotificationManager;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-abstract class BaseCrawler implements CrawlerInterface
+class BaseCrawler implements CrawlerInterface
 {
     protected $client;
     protected $database;
-    protected $notificationManager;
-    protected $urls;
 
-    protected $websiteOrigin;
     protected $adSelector;
+    protected $name;
+    protected $baseUrl;
+    protected $urls;
 
     public function __construct(
         HttpClientInterface $client,
         DatabaseInterface $database,
-        NotificationManager $notificationManager,
-        array $urls
+        array $configuration
     ) {
         $this->client = $client;
         $this->database = $database;
-        $this->notificationManager = $notificationManager;
-        $this->urls = $urls;
+        $this->adSelector = $configuration['ad_selector'];
+        $this->name = $configuration['name'];
+        $this->baseUrl = $configuration['base_url'] ?? null;
+        $this->urls = $configuration['urls'];
     }
 
     public function crawl(): void
@@ -45,7 +45,7 @@ abstract class BaseCrawler implements CrawlerInterface
     {
         $crawler->filter($this->adSelector)->each(function (Crawler $adCrawler) {
             $ad = Ad::create(
-                $this->websiteOrigin,
+                $this->name,
                 $this->extractAdId($adCrawler),
                 $this->extractAdUrl($adCrawler)
             );
@@ -58,8 +58,6 @@ abstract class BaseCrawler implements CrawlerInterface
 
     public function getCrawlerForUrl(string $url): Crawler
     {
-        $this->getRequestHeaders();
-
         $response = $this->client->request('GET', $url, [
             'verify_peer' => false,
             'headers' => $this->getRequestHeaders(),
@@ -67,7 +65,7 @@ abstract class BaseCrawler implements CrawlerInterface
 
         $content = $response->getContent();
 
-        file_put_contents(sprintf(__DIR__.'/../../data/%s.html', strtolower(str_replace(' ', '_', $this->websiteOrigin))), $content);
+        $this->saveResponse($content);
 
         return new Crawler($content);
     }
@@ -75,5 +73,10 @@ abstract class BaseCrawler implements CrawlerInterface
     protected function getRequestHeaders(): array
     {
         return [];
+    }
+
+    private function saveResponse(string $content): void
+    {
+        file_put_contents(sprintf(__DIR__.'/../../data/%s.html', strtolower(str_replace(' ', '_', $this->name))), $content);
     }
 }

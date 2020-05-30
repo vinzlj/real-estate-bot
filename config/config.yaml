@@ -1,0 +1,30 @@
+app:
+  database_path: 'data/database.json'
+  crawlers:
+    ouest_france:
+      name: 'Ouest France'
+      base_url: 'https://www.ouestfrance-immo.com'
+      ad_selector: '#listAnnonces>a'
+      urls:
+        - 'https://www.ouestfrance-immo.com/louer/maison/nantes-44-44000/?prix=0_1100'
+        - 'https://www.ouestfrance-immo.com/louer/maison/reze-44-44400/?prix=0_1100'
+        - 'https://www.ouestfrance-immo.com/louer/maison/saint-sebastien-sur-loire-44-44230/?prix=0_1100'
+        - 'https://www.ouestfrance-immo.com/immobilier/location/maison/saint-herblain-44-44162/?prix=0_1100'
+    se_loger:
+      name: 'Se Loger'
+      ad_selector: 'div[class*="ListContent__SmartClassifiedExtended"]'
+      urls:
+        - 'https://www.seloger.com/list.htm?ci=440109,440143,440190&idtt=1&idtypebien=2&pxmax=1100&tri=d_dt_crea'
+        - 'https://www.seloger.com/immobilier/locations/immo-saint-herblain-44/?projects=1&types=2&places=[{ci:440162}]&price=NaN/1100&enterprise=0&qsVersion=1.0'
+    century_21:
+      name: 'Century 21'
+      base_url: 'https://www.century21.fr'
+      ad_selector: '#blocANNONCES li.annonce'
+      urls:
+        - 'https://www.century21.fr/annonces/location-maison/v-st+sebastien+sur+loire-reze-st+herblain/cpv-44200_nantes-44100_nantes-44000_nantes-44300_nantes/s-0-/st-0-/b-0-1100/page-1/'
+    century_21_saint_sebastien:
+      name: 'Century 21 Saint-Sebastien'
+      base_url: 'https://www.century21byouestsaintseb.com'
+      ad_selector: '#blocANNONCES li.annonce'
+      urls:
+        - 'https://www.century21byouestsaintseb.com/annonces/location-maison/s-0-/st-0-/b-0-1100/'

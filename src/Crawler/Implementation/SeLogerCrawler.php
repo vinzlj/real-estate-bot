@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Crawler;
+namespace Crawler\Implementation;
 
+use Crawler\AdCrawlerInterface;
+use Crawler\BaseCrawler;
 use Symfony\Component\DomCrawler\Crawler;
 
 class SeLogerCrawler extends BaseCrawler implements AdCrawlerInterface
 {
-    protected $websiteOrigin = 'Se Loger';
-    protected $adSelector = 'div[class*=\'ListContent__SmartClassifiedExtended\']';
-
     public function extractAdId(Crawler $adCrawler): int
     {
         preg_match('/\/(\d{5,})\.htm/', $this->extractAdUrl($adCrawler), $matches);

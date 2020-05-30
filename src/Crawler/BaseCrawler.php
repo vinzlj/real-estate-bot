@@ -77,6 +77,8 @@ class BaseCrawler implements CrawlerInterface
 
     private function saveResponse(string $url, string $content): void
     {
-        file_put_contents(sprintf(__DIR__.'/../../data/%s.html', strtolower(str_replace('/', '_', str_replace('https://', '', $url)))), $content);
+        preg_match('/\/\/(.*)(\?|\/)/', $url, $matches);
+
+        file_put_contents(sprintf(__DIR__.'/../../data/%s.html', str_replace('/', '_', $matches[1])), $content);
     }
 }

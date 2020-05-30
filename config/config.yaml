@@ -37,3 +37,9 @@ app:
         - 'https://www.4immo.fr/location/maison/reze?prix_maximum=1100&surface_minimum=60'
         - 'https://www.4immo.fr/location/maison/st-herblain?prix_maximum=1100&surface_minimum=60'
         - 'https://www.4immo.fr/location/maison/st-sebastien-sur-loire?prix_maximum=1100&surface_minimum=60'
+    fnaim:
+      name: 'Fnaim'
+      base_url: 'https://www.fnaim.fr'
+      ad_selector: 'ul.liste li.item'
+      urls:
+        - 'https://www.fnaim.fr/liste-annonces-immobilieres/18--.htm?TRANSACTION=2&localites=%5B%7B%22id%22%3A8183%2C%22type%22%3A3%2C%22label%22%3A%22NANTES+(44000)%22%2C%22insee%22%3A%2244109%22%7D%2C%7B%22id%22%3A%2234489%22%2C%22type%22%3A%223%22%2C%22label%22%3A%22REZE+(44400)%22%2C%22insee%22%3A%2244143%22%7D%2C%7B%22id%22%3A%227231%22%2C%22type%22%3A%223%22%2C%22label%22%3A%22ST+SEBASTIEN+SUR+LOIRE+(44230)%22%2C%22insee%22%3A%2244190%22%7D%2C%7B%22id%22%3A%2226747%22%2C%22type%22%3A%223%22%2C%22label%22%3A%22ST+HERBLAIN+(44800)%22%2C%22insee%22%3A%2244162%22%7D%5D&TYPE%5B%5D=2&NB_PIECES%5B%5D=&NB_PIECES%5B%5D=&SURFACE%5B%5D=&SURFACE%5B%5D=&PRIX%5B%5D=&PRIX%5B%5D=1100&NB_CHAMBRES%5B%5D=&NB_CHAMBRES%5B%5D=&SURFACE_TERRAIN%5B%5D=&SURFACE_TERRAIN%5B%5D=&op=CEN_VTE_PRIX_VENTE+asc%2CTRI_PRIX+asc%2CCEN_MDT_DTE_CREATION+desc&cp=b5356780a90c44e41dd9&mp=11&lat=47.22236621783472&lng=-1.5758514404296877&zoom=11'

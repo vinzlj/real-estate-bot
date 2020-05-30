@@ -42,7 +42,7 @@ class RunCrawlerCommand extends Command
         $this
             ->setDescription('Run the crawler.')
             ->setHelp('Run the crawler.')
-            ->addOption('display', null, InputOption::VALUE_NONE, 'When set, new ads will be displayed.')
+            ->addOption('show-only', null, InputOption::VALUE_NONE, 'When set, only show ads already crawled.')
             ->addOption('notify', null, InputOption::VALUE_NONE, 'When set, notifications will be sent.')
         ;
     }
@@ -51,24 +51,33 @@ class RunCrawlerCommand extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
+        if ($input->getOption('show-only')) {
+            return $this->displayAds($this->database->getAds());
+        }
+
         $this->crawlerContainer->crawl();
         $newAds = $this->database->getNewAds();
 
-        if ($input->getOption('display')) {
-            $this->io->section(sprintf('%s - New ads', (new DateTime())->format('Y-m-d H:i:s')));
-
-            if (0 === count($newAds)) {
-                $this->io->text('No new ad');
-
-                return 0;
-            }
-
-            $this->io->table(CLIFormatter::getHeaders($newAds), CLIFormatter::format($newAds));
-        }
+        $this->displayAds($newAds);
 
         if ($input->getOption('notify')) {
             $this->notificationManager->notify($newAds);
         }
+
+        return 0;
+    }
+
+    private function displayAds(array $ads): int
+    {
+        $this->io->section(sprintf('%s - New ads', (new DateTime())->format('Y-m-d H:i:s')));
+
+        if (0 === count($ads)) {
+            $this->io->text('No new ad');
+
+            return 0;
+        }
+
+        $this->io->table(CLIFormatter::getHeaders($ads), CLIFormatter::format($ads));
 
         return 0;
     }

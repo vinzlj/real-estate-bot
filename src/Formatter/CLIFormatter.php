@@ -16,7 +16,6 @@ class CLIFormatter
         $ads = array_map(function (Ad $ad) {
             return [
                 'origin' => $ad->origin,
-                'id' => $ad->id,
                 'url' => $ad->url,
             ];
         }, $ads);

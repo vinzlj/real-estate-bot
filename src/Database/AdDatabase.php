@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Database;
 
 use Model\Ad;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class AdDatabase implements DatabaseInterface
 {
     private $databaseFile;
     private $newAds = [];
+    private $objectNormalizer;
 
-    public function __construct(string $databaseFile)
+    public function __construct(ObjectNormalizer $objectNormalizer, string $databaseFile)
     {
+        $this->objectNormalizer = $objectNormalizer;
         $this->databaseFile = $databaseFile;
     }
 
@@ -30,6 +33,17 @@ class AdDatabase implements DatabaseInterface
         $this->newAds[] = $ad;
 
         $this->writeDatabase(array_merge($this->readDatabase(), [json_decode(json_encode($ad), true)]));
+    }
+
+    public function getAds(): array
+    {
+        $ads = [];
+
+        foreach ($this->readDatabase() as $arrayAd) {
+            $ads[] = $this->objectNormalizer->denormalize($arrayAd, Ad::class);
+        }
+
+        return $ads;
     }
 
     public function getNewAds(): array

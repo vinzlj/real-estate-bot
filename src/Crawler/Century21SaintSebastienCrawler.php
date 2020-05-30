@@ -6,11 +6,11 @@ namespace Crawler;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class Century21Crawler extends BaseCrawler implements AdCrawlerInterface
+class Century21SaintSebastienCrawler extends BaseCrawler implements AdCrawlerInterface
 {
-    private const WEBSITE_BASE_URL = 'https://www.century21.fr';
+    private const WEBSITE_BASE_URL = 'https://www.century21byouestsaintseb.com';
 
-    protected $websiteOrigin = 'Century 21';
+    protected $websiteOrigin = 'Century 21 Saint-Sebastien';
     protected $adSelector = '#blocANNONCES li.annonce';
 
     public function extractAdId(Crawler $adCrawler): int

@@ -35,7 +35,7 @@ class SMSNotifier implements NotifierInterface
     {
         dump(sprintf('sending sms: %s', SMSFormatter::format($ad)));
 
-        $message = $this->client->messages
+        $this->client->messages
             ->create(
                 $_SERVER['TWILIO_RECIPIENT_PHONE_NUMBER'],
                 [

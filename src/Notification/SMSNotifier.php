@@ -37,10 +37,10 @@ class SMSNotifier implements NotifierInterface
 
         $message = $this->client->messages
             ->create(
-                $_ENV['TWILIO_RECIPIENT_PHONE_NUMBER'],
+                $_SERVER['TWILIO_RECIPIENT_PHONE_NUMBER'],
                 [
                     'body' => SMSFormatter::format($ad),
-                    'from' => $_ENV['TWILIO_SENDER_PHONE_NUMBER'],
+                    'from' => $_SERVER['TWILIO_SENDER_PHONE_NUMBER'],
                 ]
             );
     }

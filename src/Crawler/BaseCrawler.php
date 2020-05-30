@@ -47,15 +47,7 @@ abstract class BaseCrawler implements CrawlerInterface
             $ad = Ad::create(
                 $this->websiteOrigin,
                 $this->extractAdId($adCrawler),
-                $this->extractAdUrl($adCrawler),
-                $this->extractAdMainPicture($adCrawler),
-                $this->extractAdPrice($adCrawler),
-                $this->extractAdCity($adCrawler),
-                $this->extractAdAddress($adCrawler),
-                $this->extractAdTitle($adCrawler),
-                $this->extractAdDescription($adCrawler),
-                $this->extractAdCriterias($adCrawler),
-                $this->extractAdPublicationDate($adCrawler)
+                $this->extractAdUrl($adCrawler)
             );
 
             if (!$this->database->exists($ad)) {
@@ -67,6 +59,7 @@ abstract class BaseCrawler implements CrawlerInterface
     public function getCrawlerForUrl(string $url): Crawler
     {
         $response = $this->client->request('GET', $url, [
+            'verify_peer' => false,
             'headers' => [
                 'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36',
             ]

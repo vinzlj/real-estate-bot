@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Formatter;
 
-use DateTime;
 use Model\Ad;
 
 class CLIFormatter
@@ -17,21 +16,10 @@ class CLIFormatter
         $ads = array_map(function (Ad $ad) {
             return [
                 'origin' => $ad->origin,
-                'price' => $ad->price,
-                'city' => $ad->city,
-                'title' => $ad->title,
-                'publish_date' => $ad->publicationDate instanceof DateTime ? $ad->publicationDate->format('Y-m-d') : null,
+                'id' => $ad->id,
                 'url' => $ad->url,
             ];
         }, $ads);
-
-        usort($ads, function (array $a, array $b): bool {
-            if (!$a instanceof DateTime) {
-                return false;
-            }
-
-            return $a['publish_date'] < $b['publish_date'];
-        });
 
         return $ads;
     }

@@ -48,3 +48,9 @@ app:
       ad_selector: 'div.offer-list div.offer-list-item'
       urls:
         - 'https://www.logic-immo.com/location-immobilier/options/grouplocalities=240_99,30130_2,25833_2,28164_2/groupprptypesids=2/pricemax=1100/order=reco_seo_desc'
+    le_bon_coin:
+      name: 'Le Bon Coin'
+      base_url: 'https://www.leboncoin.fr'
+      ad_selector: 'li[data-qa-id=aditem_container]'
+      urls:
+        - 'https://www.leboncoin.fr/recherche/?category=10&locations=Saint-Herblain_44800__47.22534_-1.63664_4165,Saint-S%C3%A9bastien-sur-Loire_44230__47.20624_-1.50104_2979,Rez%C3%A9_44400__47.17307_-1.54465_4413,Nantes_44000__47.22188_-1.53741_8626&real_estate_type=1&furnished=2&rooms=3-max&price=min-1100'

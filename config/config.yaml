@@ -73,3 +73,9 @@ app:
       ad_selector: 'div.blocs-biens div.row div.to-animate'
       urls:
         - 'https://www.squarehabitat.fr/louer-maison-saint_sebastien_sur_loire-44230.aspx'
+    pap:
+      name: "PAP"
+      base_url: 'https://www.pap.fr'
+      ad_selector: 'div.search-results-list div.search-list-item'
+      urls:
+        - 'https://www.pap.fr/annonce/locations-maison-saint-sebastien-sur-loire-44230-g23962g24018g24112g43619-jusqu-a-1100-euros'

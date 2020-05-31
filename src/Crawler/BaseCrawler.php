@@ -81,7 +81,7 @@ class BaseCrawler implements CrawlerInterface
         ];
     }
 
-    private function saveResponse(string $url, string $content): void
+    protected function saveResponse(string $url, string $content): void
     {
         preg_match('/\/\/(.*)(\?|\/)/', $url, $matches);
 

@@ -54,3 +54,10 @@ app:
       ad_selector: 'li[data-qa-id=aditem_container]'
       urls:
         - 'https://www.leboncoin.fr/recherche/?category=10&locations=Saint-Herblain_44800__47.22534_-1.63664_4165,Saint-S%C3%A9bastien-sur-Loire_44230__47.20624_-1.50104_2979,Rez%C3%A9_44400__47.17307_-1.54465_4413,Nantes_44000__47.22188_-1.53741_8626&real_estate_type=1&furnished=2&rooms=3-max&price=min-1100'
+    gernigon_immo:
+      name: 'Gernigon Immo'
+      base_url: 'https://www.gernigon-immo.com'
+      ad_selector: 'ul.ads li.ad'
+      urls:
+        - 'https://www.gernigon-immo.com/fr/recherche/17986' # Nantes
+        - 'https://www.gernigon-immo.com/fr/recherche/18020' # Rezé

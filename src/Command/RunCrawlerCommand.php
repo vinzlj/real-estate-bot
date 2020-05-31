@@ -17,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RunCrawlerCommand extends Command
 {
-    protected static $defaultName = 'crawler:run';
+    protected static $defaultName = 'run';
 
     private $crawlerContainer;
     private $notificationManager;

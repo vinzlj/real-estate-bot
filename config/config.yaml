@@ -61,3 +61,9 @@ app:
       urls:
         - 'https://www.gernigon-immo.com/fr/recherche/17986' # Nantes
         - 'https://www.gernigon-immo.com/fr/recherche/18020' # Rezé
+    agences_reunies_ouest:
+      name: "Agences Réunies De L'ouest"
+      base_url: 'http://www.agencesreuniesouest.com'
+      ad_selector: 'div#listing_bien div.col-sm-6'
+      urls:
+        - 'http://www.agencesreuniesouest.com/catalog/advanced_search_result.php?action=update_search&search_id=1667872406580486&map_polygone=&C_28_search=EGAL&C_28_type=UNIQUE&C_28=Location&C_27_search=EGAL&C_27_type=UNIQUE&C_27=2&C_65_search=CONTIENT&C_65_type=TEXT&C_65=44+NANTES%2C44230+SAINT+SEBASTIEN+SUR+LOIRE%2C44400+REZE%2C44800+SAINT+HERBLAIN&C_65_temp=44+NANTES&C_65_temp=44230+SAINT+SEBASTIEN+SUR+LOIRE&C_65_temp=44400+REZE&C_65_temp=44800+SAINT+HERBLAIN&C_30=0&C_30_search=COMPRIS&C_30_type=NUMBER&C_30_MIN=&C_30_MAX=&C_30_loc=0&C_64_search=INFERIEUR&C_64_type=TEXT&C_64=&C_47_search=SUPERIEUR&C_47_type=NUMBER&C_46_search=SUPERIEUR&C_46_type=NUMBER&C_41_search=SUPERIEUR&C_41_type=NUMBER&C_50_search=SUPERIEUR&C_50_type=NUMBER&C_110_search=SUPERIEUR&C_110_type=NUMBER&C_1737_search=EGAL&C_1737_type=NUMBER&C_49_search=SUPERIEUR&C_49_type=NUMBER&C_48_search=SUPERIEUR&C_48_type=NUMBER&keywords='

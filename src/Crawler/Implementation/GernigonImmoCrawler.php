@@ -6,6 +6,7 @@ namespace Crawler\Implementation;
 
 use Crawler\AdCrawlerInterface;
 use Crawler\BaseCrawler;
+use Event\CrawlingUrlEvent;
 use Model\Ad;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -14,6 +15,8 @@ class GernigonImmoCrawler extends BaseCrawler implements AdCrawlerInterface
     public function crawl(): void
     {
         foreach ($this->urls as $url) {
+            $this->eventDispatcher->dispatch(new CrawlingUrlEvent($url), CrawlingUrlEvent::NAME);
+
             $this->crawlUrlWithPost($url);
         }
     }

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Crawler;
 
 use Database\DatabaseInterface;
+use Event\CrawlingUrlEvent;
 use Model\Ad;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class BaseCrawler implements CrawlerInterface
 {
+    protected $eventDispatcher;
     protected $client;
     protected $database;
 
@@ -20,10 +23,12 @@ class BaseCrawler implements CrawlerInterface
     protected $urls;
 
     public function __construct(
+        EventDispatcherInterface $eventDispatcher,
         HttpClientInterface $client,
         DatabaseInterface $database,
         array $configuration
     ) {
+        $this->eventDispatcher = $eventDispatcher;
         $this->client = $client;
         $this->database = $database;
         $this->adSelector = $configuration['ad_selector'];
@@ -35,6 +40,8 @@ class BaseCrawler implements CrawlerInterface
     public function crawl(): void
     {
         foreach ($this->urls as $url) {
+            $this->eventDispatcher->dispatch(new CrawlingUrlEvent($url), CrawlingUrlEvent::NAME);
+
             $crawler = $this->getCrawlerForUrl($url);
 
             $this->crawlUrl($crawler);

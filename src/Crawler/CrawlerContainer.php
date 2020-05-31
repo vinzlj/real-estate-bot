@@ -6,19 +6,24 @@ namespace Crawler;
 
 use Database\DatabaseInterface;
 use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CrawlerContainer
 {
     /** @var CrawlerInterface[] */
     private $crawlers = [];
+    private $configuration;
 
     public function __construct(
         array $configuration,
         HttpClientInterface $client,
-        DatabaseInterface $database
+        DatabaseInterface $database,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        foreach ($configuration as $crawlerName => $crawlerConfiguration) {
+        $this->configuration = $configuration;
+
+        foreach ($this->configuration as $crawlerName => $crawlerConfiguration) {
             $crawlerClass = $this->getCrawlerClass($crawlerName);
 
             if (!class_exists($crawlerClass)) {
@@ -27,6 +32,7 @@ class CrawlerContainer
 
             /** @var BaseCrawler */
             $this->crawlers[] = new $crawlerClass(
+                $eventDispatcher,
                 $client,
                 $database,
                 $crawlerConfiguration
@@ -39,6 +45,17 @@ class CrawlerContainer
         foreach ($this->crawlers as $crawler) {
             $crawler->crawl();
         };
+    }
+
+    public function getTotalNumberOfUrls(): int
+    {
+        $numberOfUrls = 0;
+
+        array_walk($this->configuration, function (array $crawlerConfiguration) use (&$numberOfUrls) {
+            $numberOfUrls += count($crawlerConfiguration['urls']);
+        });
+
+        return $numberOfUrls;
     }
 
     private function getCrawlerClass(string $name): string

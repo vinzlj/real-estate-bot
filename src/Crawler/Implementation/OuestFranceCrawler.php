@@ -6,6 +6,7 @@ namespace Crawler\Implementation;
 
 use Crawler\AdCrawlerInterface;
 use Crawler\BaseCrawler;
+use Event\CrawlingUrlEvent;
 use Symfony\Component\DomCrawler\Crawler;
 
 class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
@@ -13,6 +14,8 @@ class OuestFranceCrawler extends BaseCrawler implements AdCrawlerInterface
     public function crawl(): void
     {
         foreach ($this->urls as $url) {
+            $this->eventDispatcher->dispatch(new CrawlingUrlEvent($url), CrawlingUrlEvent::NAME);
+
             $crawler = $this->getCrawlerForUrl($url);
 
             if (0 < $crawler->filter('div.noAnnonces')->count()) {

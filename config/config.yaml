@@ -68,14 +68,20 @@ app:
       urls:
         - 'http://www.agencesreuniesouest.com/catalog/advanced_search_result.php?action=update_search&search_id=1667872406580486&map_polygone=&C_28_search=EGAL&C_28_type=UNIQUE&C_28=Location&C_27_search=EGAL&C_27_type=UNIQUE&C_27=2&C_65_search=CONTIENT&C_65_type=TEXT&C_65=44+NANTES%2C44230+SAINT+SEBASTIEN+SUR+LOIRE%2C44400+REZE%2C44800+SAINT+HERBLAIN&C_65_temp=44+NANTES&C_65_temp=44230+SAINT+SEBASTIEN+SUR+LOIRE&C_65_temp=44400+REZE&C_65_temp=44800+SAINT+HERBLAIN&C_30=0&C_30_search=COMPRIS&C_30_type=NUMBER&C_30_MIN=&C_30_MAX=&C_30_loc=0&C_64_search=INFERIEUR&C_64_type=TEXT&C_64=&C_47_search=SUPERIEUR&C_47_type=NUMBER&C_46_search=SUPERIEUR&C_46_type=NUMBER&C_41_search=SUPERIEUR&C_41_type=NUMBER&C_50_search=SUPERIEUR&C_50_type=NUMBER&C_110_search=SUPERIEUR&C_110_type=NUMBER&C_1737_search=EGAL&C_1737_type=NUMBER&C_49_search=SUPERIEUR&C_49_type=NUMBER&C_48_search=SUPERIEUR&C_48_type=NUMBER&keywords='
     square_habitat:
-      name: "Square Habitat"
+      name: 'Square Habitat'
       base_url: 'https://www.squarehabitat.fr'
       ad_selector: 'div.blocs-biens div.row div.to-animate'
       urls:
         - 'https://www.squarehabitat.fr/louer-maison-saint_sebastien_sur_loire-44230.aspx'
     pap:
-      name: "PAP"
+      name: 'PAP'
       base_url: 'https://www.pap.fr'
       ad_selector: 'div.search-results-list div.search-list-item'
       urls:
         - 'https://www.pap.fr/annonce/locations-maison-saint-sebastien-sur-loire-44230-g23962g24018g24112g43619-jusqu-a-1100-euros'
+    le_figaro:
+      name: 'Le Figaro Immobilier'
+      base_url: 'https://immobilier.lefigaro.fr'
+      ad_selector: 'div.container-items div.container-item'
+      urls:
+        - 'https://immobilier.lefigaro.fr/annonces/ajax/resultat/annonces.html?transaction=location&location=saint%20sebastien%20sur%20loire%20(44230),Nantes%20(44),Reze%20(44),Saint-Herblain%20(44)&priceMax=1100&type=maison&fromSearchButton=false'

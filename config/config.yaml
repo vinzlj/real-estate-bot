@@ -85,3 +85,9 @@ app:
       ad_selector: 'div.container-items div.container-item'
       urls:
         - 'https://immobilier.lefigaro.fr/annonces/ajax/resultat/annonces.html?transaction=location&location=saint%20sebastien%20sur%20loire%20(44230),Nantes%20(44),Reze%20(44),Saint-Herblain%20(44)&priceMax=1100&type=maison&fromSearchButton=false'
+    guy_hoquet:
+      name: 'Guy Hoquet'
+      ad_selector: 'div.section-content div.resultat-item'
+      urls:
+        - 'https://www.guy-hoquet.com/biens/result?1&templates%5B%5D=properties&p=1&t=&filters%5B10%5D%5B%5D=2&filters%5B20%5D%5B%5D=reze-44400_c3&filters%5B20%5D%5B%5D=saint-sebastien-sur-loire-44230_c3&filters%5B20%5D%5B%5D=nantes-44109_c4&filters%5B20%5D%5B%5D=saint-herblain-44800_c3&filters%5B30%5D%5B%5D=maison&filters%5B40%5D%5B%5D=1100&with_markers=false&_=1590952826443'
+        # non ajax: 'https://www.guy-hoquet.com/biens/result#1&p=1&f10=2&f20=reze-44400_c3,saint-sebastien-sur-loire-44230_c3,nantes-44109_c4,saint-herblain-44800_c3&f30=appartement,maison&f40=1100'
